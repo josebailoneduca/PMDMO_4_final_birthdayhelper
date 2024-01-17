@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/cargaInicial">
+
+    <fragment
+        android:id="@+id/ListaContactos"
+        android:name="com.imagenprogramada.birthdayhelper.ListaContactos"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_lista_contactos">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="com.imagenprogramada.birthdayhelper.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_second">
+
+        <argument
+            android:name="contacto"
+            app:argType="com.imagenprogramada.birthdayhelper.Contacto" />
+    </fragment>
+    <fragment
+        android:id="@+id/cargaInicial"
+        android:name="com.imagenprogramada.birthdayhelper.CargaInicial"
+        android:label="fragment_carga_inicial"
+        tools:layout="@layout/fragment_carga_inicial">
+        <action
+            android:id="@+id/action_cargaInicial_to_ListaContactos"
+            app:destination="@id/ListaContactos" />
+    </fragment>
+</navigation>
