@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/cargaInicial"
         android:name="com.imagenprogramada.birthdayhelper.CargaInicial"
-        android:label="fragment_carga_inicial"
+        android:label="Cargando contactos"
         tools:layout="@layout/fragment_carga_inicial">
         <action
             android:id="@+id/action_cargaInicial_to_ListaContactos"

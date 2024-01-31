@@ -29,9 +29,9 @@ public class CargaInicial extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.buttonFirst.setOnClickListener(v ->
-                        NavHostFragment.findNavController(this).navigate(R.id.action_cargaInicial_to_ListaContactos)
-                );
+//        binding.buttonFirst.setOnClickListener(v ->
+//                        NavHostFragment.findNavController(this).navigate(R.id.action_cargaInicial_to_ListaContactos)
+//                );
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("contacto",new Contacto("holita"));
 //                NavHostFragment.findNavController(ListaContactos.this)
