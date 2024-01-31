@@ -1,5 +1,6 @@
 package com.imagenprogramada.birthdayhelper;
 
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.imagenprogramada.birthdayhelper.databinding.FragmentCargaInicialBinding;
 import com.imagenprogramada.birthdayhelper.databinding.FragmentListaContactosBinding;
 
-public class CargaInicial extends Fragment {
+public class ListaContactosFragment extends Fragment {
 
-    private FragmentCargaInicialBinding binding;
+    private FragmentListaContactosBinding binding;
 
     @Override
     public View onCreateView(
@@ -22,21 +22,23 @@ public class CargaInicial extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentCargaInicialBinding.inflate(inflater, container, false);
+        binding = FragmentListaContactosBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        binding.buttonFirst.setOnClickListener(v ->
-//                        NavHostFragment.findNavController(this).navigate(R.id.action_cargaInicial_to_ListaContactos)
-//                );
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("contacto",new Contacto("holita"));
-//                NavHostFragment.findNavController(ListaContactos.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);
-        
+
+        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                //bundle.putSerializable("contacto",new Contacto("holita"));
+                NavHostFragment.findNavController(ListaContactosFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);
+            }
+        });
     }
 
     @Override

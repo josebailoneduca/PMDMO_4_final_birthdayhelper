@@ -1,10 +1,11 @@
-package com.imagenprogramada.birthdayhelper;
+package com.imagenprogramada.birthdayhelper.repositorio;
 
 import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -14,6 +15,8 @@ import java.util.List;
 @Entity(tableName="contacto_tabla")
 public class Contacto  implements Serializable {
 
+    public static final String SOLO_NOTIFICACION = "Solo notificacion";
+    public static final String SMS = "Mandar SMS";
     @PrimaryKey(autoGenerate = false)
     private int ID;
     private String tipoNotif;
@@ -22,7 +25,9 @@ public class Contacto  implements Serializable {
     private String fechaNacimiento;
     private String nombre;
 
+    @Ignore
     private Image foto;
+    @Ignore
     private List<String> telefonos;
 
     public Contacto(int ID, String tipoNotif, String mensaje, String telefono, String fechaNacimiento, String nombre) {
