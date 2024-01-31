@@ -22,7 +22,7 @@ public class SecondFragment extends Fragment {
     ) {
 
         binding = FragmentSecondBinding.inflate(inflater, container, false);
-        binding.textviewSecond.setText(getArguments().getSerializable("contacto", Contacto.class).nombre);
+        //binding.textviewSecond.setText(getArguments().getSerializable("contacto", Contacto.class).nombre);
         return binding.getRoot();
 
     }

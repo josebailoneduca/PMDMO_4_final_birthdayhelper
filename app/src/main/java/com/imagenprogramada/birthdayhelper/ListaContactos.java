@@ -33,7 +33,7 @@ public class ListaContactos extends Fragment {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("contacto",new Contacto("holita"));
+                //bundle.putSerializable("contacto",new Contacto("holita"));
                 NavHostFragment.findNavController(ListaContactos.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);
             }
