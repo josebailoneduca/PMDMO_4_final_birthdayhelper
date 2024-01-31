@@ -1,5 +1,6 @@
 package com.imagenprogramada.birthdayhelper.repositorio;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,8 +15,9 @@ import java.util.List;
 
 @Entity(tableName="contacto_tabla")
 public class Contacto  implements Serializable {
-
+    @Ignore
     public static final String SOLO_NOTIFICACION = "Solo notificacion";
+    @Ignore
     public static final String SMS = "Mandar SMS";
     @PrimaryKey(autoGenerate = false)
     private int ID;
@@ -25,31 +27,44 @@ public class Contacto  implements Serializable {
     private String fechaNacimiento;
     private String nombre;
 
+    private int idFoto;
+
     @Ignore
-    private Image foto;
+    private Bitmap foto;
     @Ignore
     private List<String> telefonos;
 
-    public Contacto(int ID, String tipoNotif, String mensaje, String telefono, String fechaNacimiento, String nombre) {
+    public Contacto(int ID, String tipoNotif, String mensaje, String telefono, String fechaNacimiento, String nombre, int idFoto) {
         this.ID = ID;
         this.tipoNotif = tipoNotif;
         this.mensaje = mensaje;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.nombre = nombre;
+        this.idFoto=idFoto;
         telefonos=new ArrayList<>();
+
     }
 
-    public Image getFoto() {
+    public Bitmap getFoto() {
         return foto;
     }
 
-    public void setFoto(Image foto) {
+    public void setFoto(Bitmap foto) {
         this.foto = foto;
     }
 
     public List<String> getTelefonos() {
         return telefonos;
+    }
+
+
+    public int getIdFoto() {
+        return idFoto;
+    }
+
+    public void setIdFoto(int idFoto) {
+        this.idFoto = idFoto;
     }
 
     public void setTelefonos(List<String> telefonos) {

@@ -1,7 +1,9 @@
 package com.imagenprogramada.birthdayhelper.repositorio;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.imagenprogramada.birthdayhelper.ContactoDatabase;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,7 +19,7 @@ public class ContactoRepositorio {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     private  ContactoDao contactoDao;
 
-    private MutableLiveData<List<Contacto>> _allContactos;
+    private LiveData<List<Contacto>> _allContactos=new MutableLiveData<List<Contacto>>();
 
     private GestorContactosTelefono gct;
 
@@ -25,8 +28,11 @@ public class ContactoRepositorio {
         ContactoDatabase database = ContactoDatabase.getInstance(application);
         contactoDao = database.contactoDao();
         gct=new GestorContactosTelefono(application);
-        _allContactos.setValue(contactoDao.getAllContactos());
+        _allContactos=contactoDao.getAllContactos();
+
     }
+
+
 
 
     public void insert(Contacto contacto){
@@ -50,28 +56,10 @@ public class ContactoRepositorio {
     public void actualzarContactosDesdeTelefono() {
         List<Contacto> contactosTel = gct.getAll();
         contactosTel.stream().forEach(contacto -> insert(contacto));
-        _allContactos.setValue(contactoDao.getAllContactos());
     }
 
-//
-//
-//    private void obtenerContactosDelTelefono() {
-//
-//        //comprobar permiso
-//
-//        if (
-//                ContextCompat.checkSelfPermission(this,"android.permission.READ_CONTACTS") != PackageManager.PERMISSION_GRANTED
-//                        ||
-//                        ContextCompat.checkSelfPermission(this,"android.permission.SEND_SMS") != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            ActivityCompat.requestPermissions(this, new String[]{"android.permission.READ_CONTACTS","android.permission.SEND_SMS"}, 1);
-//        } else {
-//            ArrayList<Contacto> contactosRecogidos = buscar(binding.textoBusqueda.getText().toString());
-//            contactos.clear();
-//            contactos.addAll(contactosRecogidos);
-//            adapter.notifyDataSetChanged();
-//
-//        }
-//    }
+
+
+
 
 }

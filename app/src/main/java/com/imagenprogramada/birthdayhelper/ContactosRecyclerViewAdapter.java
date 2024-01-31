@@ -9,29 +9,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.imagenprogramada.birthdayhelper.databinding.FragmentListaContactosItemBinding;
 import com.imagenprogramada.birthdayhelper.repositorio.Contacto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<ContactosRecyclerViewAdapter.ViewHolder> {
 
 
-    private List<Contacto> mValues;
+    private List<Contacto> lista =new ArrayList<>();
     /**
      * Referencia al fragmento para tener acceso a la funcion de mandar email
      */
     ListaContactosFragment fragment;
 
-    /**
-     * Configuracion inicial del adaptador
-     * @param items Lista de elementos
-     * @param fragment Referencia al fragmento en el que esta la funcion de email
-     */
-    public ContactosRecyclerViewAdapter(List<Contacto> items,ListaContactosFragment fragment) {
-        mValues = items;
-        this.fragment=fragment;
-    }
+
 
     public void setData(List<Contacto> lista){
-        mValues=lista;
+        this.lista =lista;
     }
     /**
      * Creacion de vistas
@@ -54,7 +47,7 @@ public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<Contactos
      */
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+        holder.mItem = lista.get(position);
         holder.mNombre.setText(holder.mItem.getNombre());
        // holder.mBtnMail.setOnClickListener(v -> fragment.mandarEmail(holder.mItem) );
     }
@@ -63,8 +56,15 @@ public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<Contactos
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return lista.size();
     }
+
+
+    public void setContactos(List<Contacto> contactos){
+        this.lista =contactos;
+        notifyDataSetChanged();
+    }
+
 
     /**
      * Clase de vistas de items

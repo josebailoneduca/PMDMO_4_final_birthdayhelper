@@ -1,6 +1,7 @@
 package com.imagenprogramada.birthdayhelper.repositorio;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,5 +24,5 @@ public interface ContactoDao {
     void deleteAllContactos();
 
     @Query("SELECT * FROM contacto_tabla ORDER BY nombre DESC")
-    List<Contacto> getAllContactos();
+    LiveData<List<Contacto>> getAllContactos();
 }

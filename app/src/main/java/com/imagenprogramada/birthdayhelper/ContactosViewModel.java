@@ -15,7 +15,10 @@ import java.util.List;
 public class ContactosViewModel extends AndroidViewModel {
 
     private ContactoRepositorio contactoRepositorio;
+
     private LiveData<List<Contacto>> allContactos;
+
+
     public ContactosViewModel(@NonNull Application application) {
         super(application);
         contactoRepositorio = new ContactoRepositorio(application);

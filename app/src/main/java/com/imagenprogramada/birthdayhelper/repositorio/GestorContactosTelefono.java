@@ -40,6 +40,8 @@ public class GestorContactosTelefono {
                             cursorContactos.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                     //Ver si tiene telefono para quedarnos solo con los que tengan telefono
                     boolean tieneTelefono=Integer.parseInt(cursorContactos.getString(cursorContactos.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0;
+                    int idFoto = cursorContactos.getInt(
+                            cursorContactos.getColumnIndex(ContactsContract.Contacts.PHOTO_ID));
                     if (tieneTelefono) {
                         String telefono="";
                         //Obtener telefono haciendo query
@@ -54,7 +56,7 @@ public class GestorContactosTelefono {
                                     (ContactsContract.CommonDataKinds.Phone.DATA));
                         }
                         //agregar a la lista
-                        lista_contactos.add(new Contacto(idContacto,Contacto.SOLO_NOTIFICACION,"",telefono,"",nombreContacto));
+                        lista_contactos.add(new Contacto(idContacto,Contacto.SOLO_NOTIFICACION,"",telefono,"",nombreContacto,idFoto));
                     }
                 }
             }
