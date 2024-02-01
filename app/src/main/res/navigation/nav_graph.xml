@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/ListaContactos"
         android:name="com.imagenprogramada.birthdayhelper.ListaContactosFragment"
-        android:label="@string/first_fragment_label"
+        android:label="Contactos"
         tools:layout="@layout/fragment_lista_contactos">
 
         <action
@@ -21,12 +21,11 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.imagenprogramada.birthdayhelper.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:name="com.imagenprogramada.birthdayhelper.EditarContactoFragment"
+        android:label="Editar contacto"
+        tools:layout="@layout/fragment_editar_contacto">
         <argument
-            android:name="contacto"
-            app:argType="com.imagenprogramada.birthdayhelper.repositorio.Contacto" />
+            android:name="idcontacto"
+            app:argType="integer" />
     </fragment>
 </navigation>

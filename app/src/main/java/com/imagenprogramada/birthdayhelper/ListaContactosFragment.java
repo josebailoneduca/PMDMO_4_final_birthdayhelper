@@ -39,7 +39,7 @@ public class ListaContactosFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel=  new  ViewModelProvider(this).get(ContactosViewModel.class);
+        viewModel=  new  ViewModelProvider(requireActivity()).get(ContactosViewModel.class);
 
         viewModel.getAllContactos().observe(getActivity(), new Observer<List<Contacto>>() {
             @Override
@@ -49,7 +49,7 @@ public class ListaContactosFragment extends Fragment {
         });
 
         binding.listaContactosRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-         adapter= new ContactosRecyclerViewAdapter();
+         adapter= new ContactosRecyclerViewAdapter(this,viewModel.getAllContactos().getValue());
          binding.listaContactosRecycleView.setAdapter(adapter);
 
 //        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
@@ -69,4 +69,10 @@ public class ListaContactosFragment extends Fragment {
         binding = null;
     }
 
+    public void editar(int id) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("idcontacto",id);
+        NavHostFragment.findNavController(ListaContactosFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);
+    }
 }

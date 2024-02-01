@@ -5,10 +5,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.imagenprogramada.birthdayhelper.repositorio.Contacto;
 import com.imagenprogramada.birthdayhelper.repositorio.ContactoRepositorio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,5 +47,13 @@ public class ContactosViewModel extends AndroidViewModel {
 
     public void actualizarContactosDesdeTelefono() {
        contactoRepositorio.actualzarContactosDesdeTelefono();
+    }
+
+    public Contacto getContacto(int idContacto) {
+        for (Contacto c: allContactos.getValue()) {
+            if (c.getID()==idContacto)
+                return c;
+        }
+        return null;
     }
 }

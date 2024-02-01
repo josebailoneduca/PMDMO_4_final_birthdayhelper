@@ -1,15 +1,21 @@
 package com.imagenprogramada.birthdayhelper.repositorio;
 
 import android.app.Application;
+import android.content.ContentUris;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.ContactsContract;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.imagenprogramada.birthdayhelper.ContactoDatabase;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -29,7 +35,6 @@ public class ContactoRepositorio {
         contactoDao = database.contactoDao();
         gct=new GestorContactosTelefono(application);
         _allContactos=contactoDao.getAllContactos();
-
     }
 
 
