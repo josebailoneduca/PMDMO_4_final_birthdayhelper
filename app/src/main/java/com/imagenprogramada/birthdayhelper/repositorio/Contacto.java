@@ -13,6 +13,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidad de contacto para la base de datos
+ */
 @Entity(tableName="contacto_tabla")
 public class Contacto  implements Serializable {
     @Ignore

@@ -2,6 +2,8 @@ package com.imagenprogramada.birthdayhelper;
 
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,23 +46,34 @@ public class ListaContactosFragment extends Fragment {
         viewModel.getAllContactos().observe(getActivity(), new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
-                adapter.setContactos(contactos);
+                adapter.setContactos(contactos,binding.inputBuscar.getText().toString());
             }
         });
 
         binding.listaContactosRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
          adapter= new ContactosRecyclerViewAdapter(this,viewModel.getAllContactos().getValue());
          binding.listaContactosRecycleView.setAdapter(adapter);
+         binding.inputBuscar.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-//        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Bundle bundle = new Bundle();
-//                //bundle.putSerializable("contacto",new Contacto("holita"));
-//                NavHostFragment.findNavController(ListaContactosFragment.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);
-//            }
-//        });
+             }
+
+             @Override
+             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                 List<Contacto> lista = viewModel.getAllContactos().getValue();
+                 if (lista!=null) {
+                     adapter.setContactos(lista, binding.inputBuscar.getText().toString());
+                 }
+             }
+
+             @Override
+             public void afterTextChanged(Editable s) {
+
+             }
+         });
+
+
     }
 
     @Override

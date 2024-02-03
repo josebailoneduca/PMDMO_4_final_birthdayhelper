@@ -8,11 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.imagenprogramada.birthdayhelper.databinding.FragmentEditarContactoBinding;
 import com.imagenprogramada.birthdayhelper.repositorio.Contacto;
@@ -31,6 +31,7 @@ public class EditarContactoFragment extends Fragment {
 
         binding = FragmentEditarContactoBinding.inflate(inflater, container, false);
         idContacto=getArguments().getInt("idcontacto");
+
         return binding.getRoot();
 
     }
@@ -45,6 +46,12 @@ public class EditarContactoFragment extends Fragment {
         binding.btnEditar.setOnClickListener(v -> editar());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.fecha.setText(viewModel.getFechaCumple(idContacto));
+    }
+
     private void editar() {
         Intent editIntent = new Intent(Intent.ACTION_EDIT);
         Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contacto.getID()));
@@ -55,7 +62,9 @@ public class EditarContactoFragment extends Fragment {
     private void guardar() {
         contacto.setMensaje(binding.mensaje.getText().toString());
         contacto.setTipoNotif((binding.tipo.isChecked()?Contacto.SMS:Contacto.SOLO_NOTIFICACION));
+        contacto.setFechaNacimiento(binding.fecha.getText().toString());
         viewModel.update(contacto);
+        Toast.makeText(this.getContext(),"Guardado",Toast.LENGTH_SHORT).show();
     }
 
     private void rellenarFormulario() {

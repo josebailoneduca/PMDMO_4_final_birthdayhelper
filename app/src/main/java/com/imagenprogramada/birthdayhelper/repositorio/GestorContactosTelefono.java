@@ -3,15 +3,17 @@ package com.imagenprogramada.birthdayhelper.repositorio;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorContactosTelefono {
-    Application aplicacion;
-    public GestorContactosTelefono(Application application) {
+    Context aplicacion;
+    public GestorContactosTelefono(Context application) {
         this.aplicacion=application;
     }
 
@@ -56,11 +58,40 @@ public class GestorContactosTelefono {
                                     (ContactsContract.CommonDataKinds.Phone.DATA));
                         }
                         //agregar a la lista
-                        lista_contactos.add(new Contacto(idContacto,Contacto.SOLO_NOTIFICACION,"",telefono,"",nombreContacto,idFoto));
+                        lista_contactos.add(new Contacto(idContacto,Contacto.SOLO_NOTIFICACION,"",telefono,getCumpleaños(idContacto),nombreContacto,idFoto));
                     }
                 }
             }
             cursorContactos.close(); //close the cursor
             return lista_contactos;
         }
+
+
+    @SuppressLint("Range")
+    public String getCumpleaños(int identificador) {
+        String fecha=new String();
+        Uri uri =  ContactsContract.Data.CONTENT_URI;
+
+        String[] proyeccion=new String[] {
+                ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Event.CONTACT_ID,
+                ContactsContract.CommonDataKinds.Event.START_DATE};
+
+        String filtro =
+                ContactsContract.Data.MIMETYPE + "=? AND " +
+                        ContactsContract.CommonDataKinds.Event.TYPE + "=" +
+                        ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " AND " +
+                        ContactsContract.CommonDataKinds.Event.CONTACT_ID + "=? ";
+        String[] argsFiltro = new String[] {
+                ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE,
+                String.valueOf(identificador)};
+
+        Cursor c=aplicacion.getContentResolver().query(uri,proyeccion,filtro,argsFiltro,null);
+        while(c.moveToNext())
+            fecha=c.getString(
+                    c.getColumnIndex(ContactsContract.CommonDataKinds.Event.START_DATE));
+
+        return (fecha);
+    }
+
 }

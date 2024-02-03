@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -20,6 +21,7 @@ import com.imagenprogramada.birthdayhelper.repositorio.Contacto;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<ContactosRecyclerViewAdapter.ViewHolder> {
 
@@ -74,8 +76,9 @@ public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<Contactos
             Bitmap foto=BitmapFactory.decodeStream(inputStream);
                     holder.mItem.setFoto(foto);
         }
-        if (holder.mItem.getFoto()!=null)
-            holder.mFoto.setImageBitmap(holder.mItem.getFoto());
+
+        holder.mFoto.setImageBitmap(holder.mItem.getFoto());
+
         holder.mBtn.setOnClickListener(v -> fragment.editar(holder.mItem.getID()) );
     }
 
@@ -89,10 +92,19 @@ public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<Contactos
     }
 
 
-    public void setContactos(List<Contacto> contactos){
-        this.lista =contactos;
+    public void setContactos(List<Contacto> contactos, String busqueda){
+        if (busqueda.length()>0){
+         this.lista=contactos.stream().filter(contacto -> {
+             return contacto.getNombre().toLowerCase().contains(busqueda.toLowerCase());
+         }).collect(Collectors.toList());
+        }
+            else {
+            this.lista = contactos;
+        }
         notifyDataSetChanged();
     }
+
+
 
 
     /**
