@@ -181,81 +181,36 @@ public class MainActivity extends AppCompatActivity  implements TimePickerDialog
         /* Set up the alarm */
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hora);
-        calendar.set(Calendar.MINUTE, minutos);
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND,0);
 
         Intent intent = new Intent(getApplicationContext(), Alarma.class);
-        alarmIntent = PendingIntent.getBroadcast(
-                getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+//        alarmIntent = PendingIntent.getBroadcast(
+//                getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmIntent = PendingIntent.getActivity(this,
+                    1, intent,PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        }else {
+            alarmIntent = PendingIntent.getActivity(this,
+                    1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        }
+
+
 
         alarmMgr = (AlarmManager)getApplicationContext().getSystemService(
                 getApplicationContext().ALARM_SERVICE);
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
-        Log.i("jjbo","lanza alarma");
+        Log.i("jjbo","Define alarma a las "+hourOfDay+":"+minute);
     }
 
-    private void mandarNotificacion(){
-        int notifId1=1; //Identifier for this notification
-        NotificationCompat.Builder constructorNotif =
-                new NotificationCompat.Builder(this,"mi_canal");
-        constructorNotif.setSmallIcon(android.R.drawable.ic_dialog_alert);
-        constructorNotif.setContentTitle("Mi notificación");
-        constructorNotif.setContentText("¡Has recibido una notificación!");
-        Intent resultadoIntent = new Intent(this, MainActivity.class);
-        TaskStackBuilder pila = TaskStackBuilder.create(this);
-        pila.addParentStack(MainActivity.class);
-//Add to the top of the stack the intent that launches the app
-        pila.addNextIntent(resultadoIntent);
-        PendingIntent resultadoPendingIntent =
-                pila.getPendingIntent(0,PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_UPDATE_CURRENT);
-        constructorNotif.setContentIntent(resultadoPendingIntent);
-        NotificationManager notificator =
-                (NotificationManager)
-                        getSystemService(this.getApplicationContext().NOTIFICATION_SERVICE);
 
-//Starting with version O, you have to create a notification channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel canal = new NotificationChannel("mi_canal",
-                    "título del canal de notificación",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificator.createNotificationChannel(canal);
-        }
-        notificator.notify(notifId1, constructorNotif.build());
-    }
 
-//    private void mandarNotificacion(){
-//        int notifId1=1; //Identifier for this notification
-//        NotificationCompat.Builder constructorNotif =
-//                new NotificationCompat.Builder(this,"mi_canal");
-//        constructorNotif.setSmallIcon(android.R.drawable.ic_dialog_alert);
-//        constructorNotif.setContentTitle("Mi notificación");
-//        constructorNotif.setContentText("¡Has recibido una notificación!");
-//
-//        Intent resultadoIntent = new Intent(this, MainActivity.class);
-//        TaskStackBuilder pila = TaskStackBuilder.create(this);
-//        pila.addParentStack(MainActivity.class);
-////Add to the top of the stack the intent that launches the app
-//        pila.addNextIntent(resultadoIntent);
-//        PendingIntent resultadoPendingIntent =
-//                pila.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
-//        constructorNotif.setContentIntent(resultadoPendingIntent);
-//
-//        NotificationManager notificator =
-//                (NotificationManager)
-//                        getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-//
-////Starting with version O, you have to create a notification channel
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel canal = new NotificationChannel("mi_canal",
-//                    "título del canal de notificación",
-//                    NotificationManager.IMPORTANCE_DEFAULT);
-//            notificator.createNotificationChannel(canal);
-//        }
-//        notificator.notify(notifId1, constructorNotif.build());
-//
-//
-//        Log.i("jjbo","Se ha mandado");
-//    }
+
 }

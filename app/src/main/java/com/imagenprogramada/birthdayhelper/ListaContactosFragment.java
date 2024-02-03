@@ -46,6 +46,7 @@ public class ListaContactosFragment extends Fragment {
         viewModel.getAllContactos().observe(getActivity(), new Observer<List<Contacto>>() {
             @Override
             public void onChanged(List<Contacto> contactos) {
+                if (binding!=null&&binding.inputBuscar!=null)
                 adapter.setContactos(contactos,binding.inputBuscar.getText().toString());
             }
         });
