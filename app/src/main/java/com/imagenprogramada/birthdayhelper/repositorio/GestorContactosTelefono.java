@@ -11,12 +11,20 @@ import android.provider.ContactsContract;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Utilidades para recoger los contactos del telefono
+ */
 public class GestorContactosTelefono {
     Context aplicacion;
     public GestorContactosTelefono(Context application) {
         this.aplicacion=application;
     }
 
+    /**
+     * Recoger todos los contactos
+     * @return
+     */
     @SuppressLint("Range")
     public List<Contacto> getAll() {
             //SELECT
@@ -67,6 +75,11 @@ public class GestorContactosTelefono {
         }
 
 
+    /**
+     * Recoger el cumpleaños de un contacto dado su identificador
+     * @param identificador
+     * @return
+     */
     @SuppressLint("Range")
     public String getCumpleaños(int identificador) {
         String fecha=new String();

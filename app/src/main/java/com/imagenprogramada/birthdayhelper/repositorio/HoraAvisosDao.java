@@ -10,6 +10,9 @@ import androidx.room.Update;
 
 import java.util.List;
 
+/**
+ * Data access object para la tabla de las horas de alarma
+ */
 @Dao
 public interface HoraAvisosDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)

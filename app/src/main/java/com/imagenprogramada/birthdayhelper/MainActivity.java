@@ -49,6 +49,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Actividad principal.  Controla el establecimiento de la alarma y el menu superior.
+ * Tambien inicializa el viewmodel ycomprueba los permisos necesarios para acceder a los
+ * contactos y mandar sms.
+ */
 public class MainActivity extends AppCompatActivity  implements TimePickerDialog.OnTimeSetListener{
 
     private AppBarConfiguration appBarConfiguration;
@@ -59,6 +64,14 @@ public class MainActivity extends AppCompatActivity  implements TimePickerDialog
     private int hora=0;
     private int minutos=0;
 
+    /**
+     * OnCreate hace las configuraciones iniciales de navegacion y de control del menu de acciones.
+     * Recoge del viewmodel la hora establecida actualmente para la alarma
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +97,6 @@ public class MainActivity extends AppCompatActivity  implements TimePickerDialog
         });
         obtenerContactos();
 
-
-        Log.d("Alarmas","¡Alarma disparada!");
-
     }
 
 
@@ -98,6 +108,12 @@ public class MainActivity extends AppCompatActivity  implements TimePickerDialog
         return true;
     }
 
+    /**
+     * Escucha de seleccion del menud eeditar alarma lanzando el timepickerdialog si se pulsa.
+     * @param item The menu item that was selected.
+     *
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -171,6 +187,14 @@ public class MainActivity extends AppCompatActivity  implements TimePickerDialog
         }
     }
 
+
+    /**
+     * Escucha del cambio de hora de alarma desde el timepicker. Guarda en la base de datos la hora
+     * elegida y lanza la alarma de comprobacion de cumpleaños al AlarmManager
+     * @param view the view associated with this listener
+     * @param hourOfDay the hour that was set
+     * @param minute the minute that was set
+     */
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         contactoViewModel.setHora(hourOfDay,minute);
@@ -186,8 +210,7 @@ public class MainActivity extends AppCompatActivity  implements TimePickerDialog
         calendar.set(Calendar.SECOND,0);
 
         Intent intent = new Intent(getApplicationContext(), Alarma.class);
-//        alarmIntent = PendingIntent.getBroadcast(
-//                getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+
 
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

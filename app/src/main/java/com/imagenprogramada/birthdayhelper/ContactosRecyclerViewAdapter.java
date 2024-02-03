@@ -23,21 +23,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Adapter del recyclerview de lista de contactos
+ */
 public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<ContactosRecyclerViewAdapter.ViewHolder> {
 
 
     private List<Contacto> lista =new ArrayList<>();
     /**
-     * Referencia al fragmento para tener acceso a la funcion de mandar email
+     * Referencia al fragmento para tener acceso a la funcion de editar contacto
      */
     ListaContactosFragment fragment;
     Context contexto;
 
+    /**
+     * Constructor
+     * @param fragment
+     * @param lista
+     */
     public ContactosRecyclerViewAdapter(ListaContactosFragment fragment,List<Contacto> lista){
         this.fragment=fragment;
         this.lista=lista;
     }
 
+    /**
+     * Actualiza los datos de la lista
+     * @param lista
+     */
     public void setData(List<Contacto> lista){
         this.lista =lista;
     }
@@ -92,6 +104,11 @@ public class ContactosRecyclerViewAdapter extends RecyclerView.Adapter<Contactos
     }
 
 
+    /**
+     * Actuializa los contactos a mostrar aplicando el filtro de busqueda
+     * @param contactos
+     * @param busqueda
+     */
     public void setContactos(List<Contacto> contactos, String busqueda){
         if (busqueda.length()>0){
          this.lista=contactos.stream().filter(contacto -> {

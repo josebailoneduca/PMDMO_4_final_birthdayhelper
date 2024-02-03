@@ -1,6 +1,5 @@
 package com.imagenprogramada.birthdayhelper;
 
-import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
-import androidx.lifecycle.Observer;
 
 import com.imagenprogramada.birthdayhelper.repositorio.Contacto;
 import com.imagenprogramada.birthdayhelper.repositorio.ContactoRepositorio;
@@ -25,41 +23,64 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * BroadcastReceiver que se activa con las alarmas de comprobación de los cumpleaños
+ */
 public class Alarma extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i("jjbo", "onReceive");
+        //recoger contactos
         ContactoRepositorio repositorio = new ContactoRepositorio(context);
         List<Contacto> contactos = repositorio.getAllContactosSynchronous();
         ArrayList<Contacto> avisar = new ArrayList<>();
+        //filtrar los que cumplen años hoy
         contactos.stream().forEach(contacto -> {
-            if (hayQueAvisar(contacto)) {
+            if (cumpleHoy(contacto)) {
                 Log.i("jjbo", "si avissar a" + contacto.getNombre());
                 avisar.add(contacto);
             }
         });
 
+        //mandar sms a los que lo tienen marcado
         avisar.forEach(contacto -> {
             if (contacto.getTipoNotif().equals(Contacto.SMS))
                 enviarSms(contacto, context);
         });
+        //mostrar la notificacion
         lanzarNotificacion(context, avisar);
     }
 
 
-    private boolean hayQueAvisar(Contacto contacto) {
+    /**
+     * Comprueba si cumple años hoy
+     * @param contacto
+     * @return
+     */
+    private boolean cumpleHoy(Contacto contacto) {
         Date date = new Date();
         String fDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
         Log.i("jjbo", "Comprobar" + contacto.getNombre() + " " + contacto.getFechaNacimiento() + "" + fDate + " " + (fDate.equals(contacto.getFechaNacimiento())));
         return fDate.equals(contacto.getFechaNacimiento());
     }
 
+    /**
+     * Lanza la notificacion de los que cumplen años hoy
+     * @param context
+     * @param contactos
+     */
     private void lanzarNotificacion(Context context, List<Contacto> contactos) {
         Log.i("jjbo", "NUMERO CONTACTOS A AVISAR " + contactos.size());
+        //salir si nadie cumple años
+        if (contactos.size()==0) return;
+
+        //mostrar la notificacion
+       //builder
         int notifId1 = 1; //Identifier for this notification
         NotificationCompat.Builder constructorNotif =
                 new NotificationCompat.Builder(context, "mi_canal");
+        //configurar notificacion
         constructorNotif.setSmallIcon(android.R.drawable.ic_dialog_alert);
         constructorNotif.setContentTitle("Birthday Helper");
         String listacontactos = contactos.stream().map(contacto -> contacto.getNombre()).collect(Collectors.joining(", "));
@@ -68,7 +89,7 @@ public class Alarma extends BroadcastReceiver {
         Intent resultadoIntent = new Intent(context, MainActivity.class);
         TaskStackBuilder pila = TaskStackBuilder.create(context);
         pila.addParentStack(MainActivity.class);
-//Add to the top of the stack the intent that launches the app
+        //Add to the top of the stack the intent that launches the app
         pila.addNextIntent(resultadoIntent);
         PendingIntent resultadoPendingIntent =
                 pila.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -77,13 +98,14 @@ public class Alarma extends BroadcastReceiver {
                 (NotificationManager) context.getSystemService(context.getApplicationContext().NOTIFICATION_SERVICE);
 
 
-//Starting with version O, you have to create a notification channel
+        //canal de notificacion
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel canal = new NotificationChannel("mi_canal",
                     "Canal birthday helper",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificator.createNotificationChannel(canal);
         }
+        //lanzar la notificacion
         notificator.notify(notifId1, constructorNotif.build());
     }
 
@@ -97,8 +119,6 @@ public class Alarma extends BroadcastReceiver {
 
         String texto = contacto.getMensaje();
         String telefono = contacto.getTelefono();
-        //pedir confirmacion
-
         try {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(telefono, null, texto, null, null);

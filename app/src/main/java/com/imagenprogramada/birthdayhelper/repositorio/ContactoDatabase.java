@@ -1,4 +1,4 @@
-package com.imagenprogramada.birthdayhelper;
+package com.imagenprogramada.birthdayhelper.repositorio;
 
 import android.content.Context;
 
@@ -6,11 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.imagenprogramada.birthdayhelper.repositorio.Contacto;
-import com.imagenprogramada.birthdayhelper.repositorio.ContactoDao;
-import com.imagenprogramada.birthdayhelper.repositorio.HoraAvisos;
-import com.imagenprogramada.birthdayhelper.repositorio.HoraAvisosDao;
-
+/**
+ * Creacion de base de datos de Room. Creada con patrón singleton
+ */
 @Database(entities = {Contacto.class, HoraAvisos.class}, version = 1)
 public abstract class ContactoDatabase extends RoomDatabase {
     private static ContactoDatabase instancia;

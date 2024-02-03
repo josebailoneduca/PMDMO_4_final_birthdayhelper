@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidad de hora de alarma para la base de datos
+ */
 @Entity(tableName="hora_tabla")
 public class HoraAvisos implements Serializable {
     @PrimaryKey(autoGenerate = true)
